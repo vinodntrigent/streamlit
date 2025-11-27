@@ -2,7 +2,7 @@ import streamlit as st
 
 # Page configuration
 st.set_page_config(
-    page_title="Haystack AI Product Assistant1",
+    page_title="Haystack AI Product Assistant",
     page_icon="☁️",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -168,7 +168,7 @@ st.markdown("""
             <span class="logo-icon">☁️</span>
             <span class="logo-text">MOMAR haystack</span>
         </div>
-        <div class="header-center">AI Product Assistant</div>
+        <div class="header-center">AI Product Assistant1</div>
         <div style="width: 200px;"></div>
     </div>
 """, unsafe_allow_html=True)
