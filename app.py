@@ -74,6 +74,13 @@ def load_css():
             transform: translateX(-50%);
         }
         
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+        
         /* Main content area */
         .main-content {
             margin-top: 80px;
@@ -105,16 +112,18 @@ def load_css():
             line-height: 1.5;
         }
         
-        /* Input area styling */
+        /* Input area styling - anchored to bottom */
         .input-wrapper {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            padding: 20px 30px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            background-color: white !important;
+            padding: 20px 30px !important;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
+            z-index: 1000 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
         }
         
         /* Style text input */
@@ -168,24 +177,34 @@ st.markdown("""
             <span class="logo-icon">☁️</span>
             <span class="logo-text">MOMAR haystack</span>
         </div>
-        <div class="header-center">AI Product Assistant12</div>
-        <div style="width: 200px;"></div>
+        <div class="header-center">AI Product Assistant</div>
+        <div class="header-right">
+            <!-- Buttons will be positioned here -->
+        </div>
     </div>
 """, unsafe_allow_html=True)
 
-# Header buttons - using columns to position them
-col1, col2, col3, col4, col5 = st.columns([2, 1, 1, 1, 1])
+# Header buttons - positioned using columns with empty space on left
+col1, col2, col3, col4, col5 = st.columns([3, 1, 1, 1, 1])
 with col4:
     admin_clicked = st.button("Admin Dashboard", key="admin", use_container_width=True)
 with col5:
     new_chat_clicked = st.button("New Chat", key="new_chat", use_container_width=True)
 
-# Apply custom styling to header buttons using data attributes
+# Apply custom styling to header buttons and position them in header
 st.markdown("""
     <style>
-        /* Target buttons by their text content using attribute selectors */
-        button:has-text("Admin Dashboard"),
+        /* Position buttons in header-right area */
+        button[data-testid="baseButton-secondary"] {
+            position: relative;
+        }
+        
+        /* Target Admin Dashboard button (4th column) */
         div[data-testid="column"]:nth-of-type(4) button {
+            position: absolute !important;
+            top: 15px !important;
+            right: 180px !important;
+            z-index: 1001 !important;
             background-color: #FFB6C1 !important;
             color: #DC143C !important;
             border: none !important;
@@ -193,11 +212,19 @@ st.markdown("""
             padding: 8px 16px !important;
             font-size: 14px !important;
             font-weight: 500 !important;
+            width: auto !important;
+            min-width: auto !important;
         }
         div[data-testid="column"]:nth-of-type(4) button:hover {
             background-color: #FFA0B4 !important;
         }
+        
+        /* Target New Chat button (5th column) */
         div[data-testid="column"]:nth-of-type(5) button {
+            position: absolute !important;
+            top: 15px !important;
+            right: 30px !important;
+            z-index: 1001 !important;
             background-color: white !important;
             color: #DC143C !important;
             border: none !important;
@@ -205,9 +232,24 @@ st.markdown("""
             padding: 8px 16px !important;
             font-size: 14px !important;
             font-weight: 500 !important;
+            width: auto !important;
+            min-width: auto !important;
         }
         div[data-testid="column"]:nth-of-type(5) button:hover {
             background-color: #F5F5F5 !important;
+        }
+        
+        /* Hide the column containers visually but keep them for button functionality */
+        div[data-testid="column"]:nth-of-type(4),
+        div[data-testid="column"]:nth-of-type(5) {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            z-index: 1001 !important;
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
     </style>
 """, unsafe_allow_html=True)
