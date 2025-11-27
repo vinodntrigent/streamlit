@@ -2,7 +2,7 @@ import streamlit as st
 
 # Page configuration
 st.set_page_config(
-    page_title="Momar - AI Assistant",
+    page_title="Momar - AI Assistant11",
     page_icon="💬",
     layout="wide",
     initial_sidebar_state="collapsed"
