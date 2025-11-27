@@ -2,7 +2,7 @@ import streamlit as st
 
 # Page configuration
 st.set_page_config(
-    page_title="Haystack AI Product Assistant",
+    page_title="Haystack AI Product Assistant1",
     page_icon="☁️",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -79,6 +79,14 @@ def load_css():
             align-items: center;
             gap: 10px;
             margin-left: auto;
+            position: relative;
+        }
+        
+        /* Header button container */
+        .header-buttons-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         /* Main content area */
@@ -112,7 +120,7 @@ def load_css():
             line-height: 1.5;
         }
         
-        /* Input area styling - anchored to bottom */
+        /* Input area styling - anchored to bottom/footer */
         .input-wrapper {
             position: fixed !important;
             bottom: 0 !important;
@@ -124,6 +132,18 @@ def load_css():
             z-index: 1000 !important;
             width: 100% !important;
             box-sizing: border-box !important;
+            margin: 0 !important;
+        }
+        
+        /* Ensure form inside input-wrapper has no extra margins */
+        .input-wrapper .stForm {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .input-wrapper form {
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         /* Style text input */
@@ -184,27 +204,21 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Header buttons - positioned using columns with empty space on left
-col1, col2, col3, col4, col5 = st.columns([3, 1, 1, 1, 1])
-with col4:
-    admin_clicked = st.button("Admin Dashboard", key="admin", use_container_width=True)
-with col5:
-    new_chat_clicked = st.button("New Chat", key="new_chat", use_container_width=True)
+# Create buttons
+admin_clicked = st.button("Admin Dashboard", key="admin")
+new_chat_clicked = st.button("New Chat", key="new_chat")
 
-# Apply custom styling to header buttons and position them in header
+# Apply custom styling and JavaScript to move buttons into header
 st.markdown("""
     <style>
-        /* Position buttons in header-right area */
-        button[data-testid="baseButton-secondary"] {
-            position: relative;
+        /* Hide original button containers */
+        div[data-testid="column"]:has(button[key="admin"]),
+        div[data-testid="column"]:has(button[key="new_chat"]) {
+            display: none !important;
         }
         
-        /* Target Admin Dashboard button (4th column) */
-        div[data-testid="column"]:nth-of-type(4) button {
-            position: absolute !important;
-            top: 15px !important;
-            right: 180px !important;
-            z-index: 1001 !important;
+        /* Style buttons in header */
+        .header-right button {
             background-color: #FFB6C1 !important;
             color: #DC143C !important;
             border: none !important;
@@ -212,46 +226,72 @@ st.markdown("""
             padding: 8px 16px !important;
             font-size: 14px !important;
             font-weight: 500 !important;
-            width: auto !important;
-            min-width: auto !important;
+            cursor: pointer !important;
+            margin-left: 10px !important;
         }
-        div[data-testid="column"]:nth-of-type(4) button:hover {
+        
+        .header-right button:first-child {
+            background-color: #FFB6C1 !important;
+            margin-left: 0 !important;
+        }
+        
+        .header-right button:first-child:hover {
             background-color: #FFA0B4 !important;
         }
         
-        /* Target New Chat button (5th column) */
-        div[data-testid="column"]:nth-of-type(5) button {
-            position: absolute !important;
-            top: 15px !important;
-            right: 30px !important;
-            z-index: 1001 !important;
+        .header-right button:last-child {
             background-color: white !important;
-            color: #DC143C !important;
-            border: none !important;
-            border-radius: 8px !important;
-            padding: 8px 16px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            width: auto !important;
-            min-width: auto !important;
-        }
-        div[data-testid="column"]:nth-of-type(5) button:hover {
-            background-color: #F5F5F5 !important;
         }
         
-        /* Hide the column containers visually but keep them for button functionality */
-        div[data-testid="column"]:nth-of-type(4),
-        div[data-testid="column"]:nth-of-type(5) {
-            position: fixed !important;
-            top: 0 !important;
-            right: 0 !important;
-            z-index: 1001 !important;
-            background: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
+        .header-right button:last-child:hover {
+            background-color: #F5F5F5 !important;
         }
     </style>
+    <script>
+        function moveButtonsToHeader() {
+            const headerRight = document.querySelector('.header-right');
+            const adminButton = document.querySelector('button[key="admin"]');
+            const newChatButton = document.querySelector('button[key="new_chat"]');
+            
+            if (headerRight && adminButton && newChatButton) {
+                // Check if buttons are already moved
+                if (headerRight.contains(adminButton) || headerRight.contains(newChatButton)) {
+                    return;
+                }
+                
+                // Move buttons to header-right
+                headerRight.appendChild(adminButton);
+                headerRight.appendChild(newChatButton);
+            }
+        }
+        
+        // Run immediately and after delays
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(moveButtonsToHeader, 100);
+            });
+        } else {
+            moveButtonsToHeader();
+            setTimeout(moveButtonsToHeader, 100);
+            setTimeout(moveButtonsToHeader, 500);
+        }
+        
+        // Also run after Streamlit reruns
+        window.addEventListener('load', function() {
+            setTimeout(moveButtonsToHeader, 100);
+            setTimeout(moveButtonsToHeader, 500);
+        });
+        
+        // Use MutationObserver to detect DOM changes
+        const observer = new MutationObserver(function() {
+            moveButtonsToHeader();
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    </script>
 """, unsafe_allow_html=True)
 
 # Handle header button clicks
