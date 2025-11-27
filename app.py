@@ -2,13 +2,13 @@ import streamlit as st
 
 # Page configuration
 st.set_page_config(
-    page_title="Haystack AI Product Assistant1",
-    page_icon="☁️",
+    page_title="Momar - AI Assistant",
+    page_icon="💬",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS
+# Custom CSS for ChatGPT-style design
 def load_css():
     css = """
     <style>
@@ -18,11 +18,24 @@ def load_css():
         header {visibility: hidden;}
         .stDeployButton {display: none;}
         
-        /* Remove padding and margins */
+        /* Global styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        
         .stApp {
             margin-top: 0;
             padding-top: 0;
-            background-color: white;
+            background-color: #343541;
+            height: 100vh;
+            overflow: hidden;
         }
         
         /* Block container styling */
@@ -30,152 +43,240 @@ def load_css():
             padding-top: 0;
             padding-bottom: 0;
             max-width: 100%;
+            height: 100%;
         }
         
-        /* Header bar */
-        .header-wrapper {
+        /* Fixed Header */
+        .chat-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
+            height: 60px;
+            background-color: #202123;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             z-index: 1000;
-            background-color: #DC143C;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0 20px;
         }
         
-        .header-left {
+        .header-content {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            color: #ECECF1;
         }
         
-        .logo-text {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
+        .header-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ECECF1;
+        }
+        
+        /* Main Chat Container */
+        .chat-container {
+            position: fixed;
+            top: 60px;
+            bottom: 100px;
+            left: 0;
+            right: 0;
+            overflow-y: auto;
+            padding: 20px 0;
+            background-color: #343541;
+        }
+        
+        .chat-messages {
+            max-width: 768px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Message Styling */
+        .message-wrapper {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            width: 100%;
+        }
+        
+        .message-wrapper.user {
+            background-color: #343541;
+        }
+        
+        .message-wrapper.assistant {
+            background-color: #444654;
+        }
+        
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+        
+        .message-avatar.user {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .message-avatar.assistant {
+            background: linear-gradient(135deg, #10a37f 0%, #1a7f64 100%);
+        }
+        
+        .message-content {
+            flex: 1;
+            color: #ECECF1;
+            font-size: 16px;
+            line-height: 1.75;
+            padding-top: 4px;
+        }
+        
+        .message-content p {
             margin: 0;
         }
         
-        .logo-icon {
-            font-size: 28px;
-            color: white;
-        }
-        
-        .header-center {
-            color: white;
-            font-size: 18px;
-            font-weight: 500;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .header-right {
+        /* Input Footer */
+        .chat-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background-color: #343541;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-left: auto;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .input-container {
+            max-width: 768px;
+            width: 100%;
             position: relative;
         }
         
-        /* Header button container */
-        .header-buttons-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Main content area */
-        .main-content {
-            margin-top: 80px;
-            padding: 30px;
-            min-height: calc(100vh - 200px);
-            padding-bottom: 120px;
-        }
-        
-        /* Chat message styling */
-        .chat-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .ai-icon {
-            font-size: 24px;
-            margin-top: 5px;
-        }
-        
-        .message-bubble {
-            background-color: #F5F5F5;
-            padding: 15px 20px;
-            border-radius: 18px;
-            max-width: 70%;
-            color: #333;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        
-        /* Input area styling - anchored to bottom/footer */
-        .input-wrapper {
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            background-color: white !important;
-            padding: 20px 30px !important;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
-            z-index: 1000 !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-            margin: 0 !important;
-        }
-        
-        /* Ensure form inside input-wrapper has no extra margins */
-        .input-wrapper .stForm {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        .input-wrapper form {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        /* Style text input */
+        /* Input styling */
         .stTextInput > div > div > input {
-            border: 2px solid #E0E0E0 !important;
-            border-radius: 25px !important;
-            padding: 10px 100px 10px 20px !important;
+            background-color: #40414F !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 12px !important;
+            padding: 12px 100px 12px 16px !important;
             font-size: 16px !important;
+            color: #ECECF1 !important;
+            width: 100% !important;
+        }
+        
+        .stTextInput > div > div > input:focus {
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
         }
         
         .stTextInput > div > div > input::placeholder {
-            color: #999 !important;
+            color: #8E8EA0 !important;
         }
         
-        /* Style form buttons */
-        .stForm button {
-            border-radius: 50% !important;
-            width: 40px !important;
-            height: 40px !important;
-            min-width: 40px !important;
-            padding: 0 !important;
-            font-size: 18px !important;
-        }
-        
-        /* Ensure body has white background */
-        body {
-            background-color: white;
-        }
-        
-        /* Hide Streamlit's default input styling */
         .stTextInput label {
-            display: none;
+            display: none !important;
+        }
+        
+        /* Form container */
+        .stForm {
+            margin: 0 !important;
+            position: relative !important;
+        }
+        
+        /* Input container wrapper */
+        .input-container {
+            position: relative !important;
+        }
+        
+        .input-container .stTextInput {
+            position: relative !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* Hide button columns and position buttons absolutely */
+        .stForm div[data-testid="column"] {
+            position: absolute !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: auto !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        
+        .stForm div[data-testid="column"]:nth-of-type(1) {
+            right: 50px !important;
+        }
+        
+        .stForm div[data-testid="column"]:nth-of-type(2) {
+            right: 8px !important;
+        }
+        
+        /* Style buttons */
+        .stForm button {
+            background-color: transparent !important;
+            border: none !important;
+            color: #8E8EA0 !important;
+            cursor: pointer !important;
+            padding: 8px !important;
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            border-radius: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 18px !important;
+            z-index: 10 !important;
+            margin: 0 !important;
+        }
+        
+        .stForm button:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: #ECECF1 !important;
+        }
+        
+        /* Scrollbar styling */
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chat-container::-webkit-scrollbar-track {
+            background: #343541;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb {
+            background: #565869;
+            border-radius: 4px;
+        }
+        
+        .chat-container::-webkit-scrollbar-thumb:hover {
+            background: #6B6D7E;
+        }
+        
+        /* Hide Streamlit default elements */
+        .element-container {
+            margin-bottom: 0 !important;
         }
     </style>
     """
@@ -187,187 +288,69 @@ load_css()
 # Initialize session state
 if 'messages' not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! What are you looking for today?"}
+        {"role": "assistant", "content": "Hello! I'm Momar, your AI assistant. How can I help you today?"}
     ]
 
-# Header
+# Fixed Header
 st.markdown("""
-    <div class="header-wrapper">
-        <div class="header-left">
-            <span class="logo-icon">☁️</span>
-            <span class="logo-text">MOMAR haystack</span>
-        </div>
-        <div class="header-center">AI Product Assistant</div>
-        <div class="header-right">
-            <!-- Buttons will be positioned here -->
+    <div class="chat-header">
+        <div class="header-content">
+            <div class="header-icon">💬</div>
+            <div class="header-title">Momar</div>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-# Create buttons
-admin_clicked = st.button("Admin Dashboard", key="admin")
-new_chat_clicked = st.button("New Chat", key="new_chat")
-
-# Apply custom styling and JavaScript to move buttons into header
-st.markdown("""
-    <style>
-        /* Hide original button containers */
-        div[data-testid="column"]:has(button[key="admin"]),
-        div[data-testid="column"]:has(button[key="new_chat"]) {
-            display: none !important;
-        }
-        
-        /* Style buttons in header */
-        .header-right button {
-            background-color: #FFB6C1 !important;
-            color: #DC143C !important;
-            border: none !important;
-            border-radius: 8px !important;
-            padding: 8px 16px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            cursor: pointer !important;
-            margin-left: 10px !important;
-        }
-        
-        .header-right button:first-child {
-            background-color: #FFB6C1 !important;
-            margin-left: 0 !important;
-        }
-        
-        .header-right button:first-child:hover {
-            background-color: #FFA0B4 !important;
-        }
-        
-        .header-right button:last-child {
-            background-color: white !important;
-        }
-        
-        .header-right button:last-child:hover {
-            background-color: #F5F5F5 !important;
-        }
-    </style>
-    <script>
-        function moveButtonsToHeader() {
-            const headerRight = document.querySelector('.header-right');
-            const adminButton = document.querySelector('button[key="admin"]');
-            const newChatButton = document.querySelector('button[key="new_chat"]');
-            
-            if (headerRight && adminButton && newChatButton) {
-                // Check if buttons are already moved
-                if (headerRight.contains(adminButton) || headerRight.contains(newChatButton)) {
-                    return;
-                }
-                
-                // Move buttons to header-right
-                headerRight.appendChild(adminButton);
-                headerRight.appendChild(newChatButton);
-            }
-        }
-        
-        // Run immediately and after delays
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(moveButtonsToHeader, 100);
-            });
-        } else {
-            moveButtonsToHeader();
-            setTimeout(moveButtonsToHeader, 100);
-            setTimeout(moveButtonsToHeader, 500);
-        }
-        
-        // Also run after Streamlit reruns
-        window.addEventListener('load', function() {
-            setTimeout(moveButtonsToHeader, 100);
-            setTimeout(moveButtonsToHeader, 500);
-        });
-        
-        // Use MutationObserver to detect DOM changes
-        const observer = new MutationObserver(function() {
-            moveButtonsToHeader();
-        });
-        
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    </script>
-""", unsafe_allow_html=True)
-
-# Handle header button clicks
-if admin_clicked:
-    st.info("Admin Dashboard - Coming soon!")
-
-if new_chat_clicked:
-    st.session_state.messages = [
-        {"role": "assistant", "content": "Hello! What are you looking for today?"}
-    ]
-    st.rerun()
-
-# Main content area
-st.markdown('<div class="main-content">', unsafe_allow_html=True)
+# Main Chat Container
+st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+st.markdown('<div class="chat-messages">', unsafe_allow_html=True)
 
 # Display chat messages
 for i, msg in enumerate(st.session_state.messages):
     if msg["role"] == "assistant":
         st.markdown(f"""
-            <div class="chat-container">
-                <div class="ai-icon">✨</div>
-                <div class="message-bubble">{msg["content"]}</div>
+            <div class="message-wrapper assistant">
+                <div class="message-avatar assistant">🤖</div>
+                <div class="message-content">{msg["content"]}</div>
             </div>
         """, unsafe_allow_html=True)
     elif msg["role"] == "user":
         st.markdown(f"""
-            <div class="chat-container" style="justify-content: flex-end;">
-                <div class="message-bubble" style="background-color: #DC143C; color: white;">{msg["content"]}</div>
+            <div class="message-wrapper user">
+                <div class="message-avatar user">👤</div>
+                <div class="message-content">{msg["content"]}</div>
             </div>
         """, unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-# Input area with form
-st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
+# Fixed Footer with Input
+st.markdown('<div class="chat-footer">', unsafe_allow_html=True)
+st.markdown('<div class="input-container">', unsafe_allow_html=True)
 
 with st.form("chat_form", clear_on_submit=True):
-    input_col1, input_col2, input_col3 = st.columns([12, 1, 1])
-    with input_col1:
-        user_input = st.text_input("", placeholder="Ask anything...", key="user_input", label_visibility="collapsed")
-    with input_col2:
+    user_input = st.text_input(
+        "", 
+        placeholder="Message Momar...", 
+        key="user_input", 
+        label_visibility="collapsed"
+    )
+    # Create buttons in a row, positioned via CSS
+    btn_col1, btn_col2 = st.columns([1, 1])
+    with btn_col1:
         mic_clicked = st.form_submit_button("🎤", use_container_width=True)
-    with input_col3:
+    with btn_col2:
         send_clicked = st.form_submit_button("➤", use_container_width=True, type="primary")
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-# Style input buttons
-st.markdown("""
-    <style>
-        /* Style microphone button (first submit button) */
-        .stForm div[data-testid="column"]:nth-of-type(2) button {
-            background-color: white !important;
-            color: #333 !important;
-            border: 2px solid #E0E0E0 !important;
-        }
-        .stForm div[data-testid="column"]:nth-of-type(2) button:hover {
-            background-color: #F5F5F5 !important;
-        }
-        /* Style send button (second submit button) */
-        .stForm div[data-testid="column"]:nth-of-type(3) button {
-            background-color: #DC143C !important;
-            color: white !important;
-            border: none !important;
-        }
-        .stForm div[data-testid="column"]:nth-of-type(3) button:hover {
-            background-color: #B8122F !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Handle form submission
 if send_clicked and user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
     # Here you would add AI response logic
-    st.session_state.messages.append({"role": "assistant", "content": f"You said: {user_input}"})
+    st.session_state.messages.append({"role": "assistant", "content": f"I understand you said: {user_input}. How can I assist you further?"})
     st.rerun()
 
 if mic_clicked:
