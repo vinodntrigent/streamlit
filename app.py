@@ -258,7 +258,6 @@ st.markdown("""
                 if (headerRight.contains(adminButton) || headerRight.contains(newChatButton)) {
                     return;
                 }
-                alert('hi');
                 // Move buttons to header-right
                 headerRight.appendChild(adminButton);
                 headerRight.appendChild(newChatButton);
@@ -272,6 +271,7 @@ st.markdown("""
             });
         } else {
             moveButtonsToHeader();
+            console.log('hi');
             setTimeout(moveButtonsToHeader, 100);
             setTimeout(moveButtonsToHeader, 500);
         }
