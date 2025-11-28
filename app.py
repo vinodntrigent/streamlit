@@ -258,7 +258,7 @@ st.markdown("""
                 if (headerRight.contains(adminButton) || headerRight.contains(newChatButton)) {
                     return;
                 }
-                
+                alert('hi');
                 // Move buttons to header-right
                 headerRight.appendChild(adminButton);
                 headerRight.appendChild(newChatButton);
