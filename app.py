@@ -251,10 +251,6 @@ st.markdown("""
     button[key="new_chat_btn"]:hover {
         background-color: #f0f0f0 !important;
     }
-
-    .st-emotion-cache-1vo6xi6 {
-        display:none;
-    }
 </style>
 """, unsafe_allow_html=True)
 
