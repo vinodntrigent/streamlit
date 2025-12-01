@@ -251,9 +251,6 @@ st.markdown("""
     button[key="new_chat_btn"]:hover {
         background-color: #f0f0f0 !important;
     }
-    .main-content {
-        display:none;
-    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -264,10 +261,10 @@ if 'messages' not in st.session_state:
     ]
     # Add example conversation from design (only on first load)
     if 'example_added' not in st.session_state:
-        example_user_msg = """I have an appt with a commercial plumbing and underground utility company. they do all the underground piping for subdivisions, distribution centers (amazon), and hospitals. my appt is not until the last week in october but i want to be prepared. they also do all of their equipment maintenance on site. which i know we to show when it comes to that. i just need help with the commercial plumbing and underground utility work. can someone help me out on what products to talk about"""
-        example_ai_response = """If they are installing underground plumbing and utilities, then they are sure to have heavy equipment (i.e. All-In-One Fleet Treat, Titan Tacx, Titan Seize Not, Nutcracker, Brute, Boa Wrap, Python Tape, etc.) and they may need dust suppression and erosion control (MinCryl X-50) and they will need work gloves (Comprehensive Glove Program) and PPE (Safetyman). They are sure to have spills (Fuel & Oil Be Gone is great for rainbows on puddles, Insta-Zorb is great for removing muddy water from holes and Siege is great for hydraulic oil and fuel spill). After they install pipes, they typically jet them to remove dirt and debris (Muddog or Devour Ultra). They are working in dirty environments, so they'll need waterless hand cleaners (Double Duty Towels, Nutcase). For pipe fittings, they can use Moly DSD Aerosol and Titan 2250. I'm sure they'd love to have some Aqua Lights and Vision Pro Lights. Everyone loves Index-Tend Pry Bars. Hope that helps!"""
-        st.session_state.messages.append({"role": "user", "content": example_user_msg})
-        st.session_state.messages.append({"role": "assistant", "content": example_ai_response})
+        user_msg = """I have an appt with a commercial plumbing and underground utility company. they do all the underground piping for subdivisions, distribution centers (amazon), and hospitals. my appt is not until the last week in october but i want to be prepared. they also do all of their equipment maintenance on site. which i know we to show when it comes to that. i just need help with the commercial plumbing and underground utility work. can someone help me out on what products to talk about"""
+        ai_response = """If they are installing underground plumbing and utilities, then they are sure to have heavy equipment (i.e. All-In-One Fleet Treat, Titan Tacx, Titan Seize Not, Nutcracker, Brute, Boa Wrap, Python Tape, etc.) and they may need dust suppression and erosion control (MinCryl X-50) and they will need work gloves (Comprehensive Glove Program) and PPE (Safetyman). They are sure to have spills (Fuel & Oil Be Gone is great for rainbows on puddles, Insta-Zorb is great for removing muddy water from holes and Siege is great for hydraulic oil and fuel spill). After they install pipes, they typically jet them to remove dirt and debris (Muddog or Devour Ultra). They are working in dirty environments, so they'll need waterless hand cleaners (Double Duty Towels, Nutcase). For pipe fittings, they can use Moly DSD Aerosol and Titan 2250. I'm sure they'd love to have some Aqua Lights and Vision Pro Lights. Everyone loves Index-Tend Pry Bars. Hope that helps!"""
+        st.session_state.messages.append({"role": "user", "content": user_msg})
+        st.session_state.messages.append({"role": "assistant", "content": ai_response})
         st.session_state.example_added = True
 
 # Render header
