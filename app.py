@@ -1,374 +1,360 @@
 import streamlit as st
+import html
 
 # Page configuration
 st.set_page_config(
-    page_title="Haystack AI Product Assistant1",
-    page_icon="☁️",
+    page_title="Haystack AI Product Assistant",
+    page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
 # Custom CSS
-def load_css():
-    css = """
-    <style>
-        /* Hide default Streamlit elements */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        .stDeployButton {display: none;}
-        
-        /* Remove padding and margins */
-        .stApp {
-            margin-top: 0;
-            padding-top: 0;
-            background-color: white;
-        }
-        
-        /* Block container styling */
-        .main .block-container {
-            padding-top: 0;
-            padding-bottom: 0;
-            max-width: 100%;
-        }
-        
-        /* Header bar */
-        .header-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background-color: #DC143C;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo-text {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0;
-        }
-        
-        .logo-icon {
-            font-size: 28px;
-            color: white;
-        }
-        
-        .header-center {
-            color: white;
-            font-size: 18px;
-            font-weight: 500;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-left: auto;
-            position: relative;
-        }
-        
-        /* Header button container */
-        .header-buttons-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Main content area */
-        .main-content {
-            margin-top: 80px;
-            padding: 30px;
-            min-height: calc(100vh - 200px);
-            padding-bottom: 120px;
-        }
-        
-        /* Chat message styling */
-        .chat-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .ai-icon {
-            font-size: 24px;
-            margin-top: 5px;
-        }
-        
-        .message-bubble {
-            background-color: #F5F5F5;
-            padding: 15px 20px;
-            border-radius: 18px;
-            max-width: 70%;
-            color: #333;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        
-        /* Input area styling - anchored to bottom/footer */
-        .input-wrapper {
-            position: fixed !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            background-color: white !important;
-            padding: 20px 30px !important;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
-            z-index: 1000 !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-            margin: 0 !important;
-        }
-        
-        /* Ensure form inside input-wrapper has no extra margins */
-        .input-wrapper .stForm {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        .input-wrapper form {
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        /* Style text input */
-        .stTextInput > div > div > input {
-            border: 2px solid #E0E0E0 !important;
-            border-radius: 25px !important;
-            padding: 10px 100px 10px 20px !important;
-            font-size: 16px !important;
-        }
-        
-        .stTextInput > div > div > input::placeholder {
-            color: #999 !important;
-        }
-        
-        /* Style form buttons */
-        .stForm button {
-            border-radius: 50% !important;
-            width: 40px !important;
-            height: 40px !important;
-            min-width: 40px !important;
-            padding: 0 !important;
-            font-size: 18px !important;
-        }
-        
-        /* Ensure body has white background */
-        body {
-            background-color: white;
-        }
-        
-        /* Hide Streamlit's default input styling */
-        .stTextInput label {
-            display: none;
-        }
-    </style>
-    """
-    st.markdown(css, unsafe_allow_html=True)
-
-# Load CSS
-load_css()
+st.markdown("""
+<style>
+    /* Hide Streamlit default elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    .stApp {
+        margin-top: 0;
+        padding-top: 0;
+        background-color: #FFFFFF;
+    }
+    
+    /* Red Header */
+    .header-container {
+        background-color: #DC143C;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .logo-square {
+        width: 40px;
+        height: 40px;
+        background-color: white;
+        border: 2px solid #DC143C;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #DC143C;
+        flex-shrink: 0;
+    }
+    
+    .haystack-text {
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0;
+    }
+    
+    .ai-product-text {
+        color: #FFB6C1;
+        font-size: 20px;
+        margin: 0;
+        margin-left: 0.5rem;
+    }
+    
+    .header-right {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .header-button {
+        background-color: white;
+        color: #DC143C;
+        border: none;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .header-button:hover {
+        background-color: #f0f0f0;
+    }
+    
+    /* Main content area */
+    .main-content {
+        margin-top: 80px;
+        padding: 2rem 2rem 120px 2rem;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        min-height: calc(100vh - 200px);
+    }
+    
+    /* Chat messages */
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .message-ai {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        max-width: 70%;
+    }
+    
+    .message-user {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        max-width: 70%;
+        margin-left: auto;
+        flex-direction: row-reverse;
+    }
+    
+    .icon-container {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #E0E0E0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 20px;
+    }
+    
+    .message-bubble {
+        padding: 1rem 1.5rem;
+        border-radius: 18px;
+        word-wrap: break-word;
+        line-height: 1.5;
+        font-size: 15px;
+    }
+    
+    .bubble-ai {
+        background-color: #F5F5DC;
+        color: #333;
+    }
+    
+    .bubble-user {
+        background-color: #E6E6FA;
+        color: #333;
+    }
+    
+    /* Input area container */
+    .input-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 1rem 2rem;
+        border-top: 1px solid #E0E0E0;
+        z-index: 1000;
+    }
+    
+    .input-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        background-color: #F5F5F5;
+        border-radius: 25px;
+        padding: 0.75rem 1.5rem;
+        gap: 1rem;
+    }
+    
+    /* Input area styling */
+    .stTextInput {
+        flex: 1;
+    }
+    
+    .stTextInput > div > div > input {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        box-shadow: none;
+    }
+    
+    .stTextInput > div > div > input::placeholder {
+        color: #999;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        box-shadow: none;
+    }
+    
+    /* Hide Streamlit input label */
+    .stTextInput label {
+        display: none;
+    }
+    
+    .input-icon {
+        font-size: 20px;
+        color: #666;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    
+    .input-icon.send {
+        color: #DC143C;
+    }
+    
+    /* Style header buttons to match design */
+    .header-button-st {
+        background-color: white !important;
+        color: #DC143C !important;
+        border: none !important;
+        padding: 0.5rem 1.5rem !important;
+        border-radius: 4px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }
+    
+    .header-button-st:hover {
+        background-color: #f0f0f0 !important;
+    }
+    
+    /* Position header buttons correctly */
+    .header-right [data-testid="column"] {
+        width: auto !important;
+        flex: 0 0 auto !important;
+    }
+    
+    button[key="admin_btn"],
+    button[key="new_chat_btn"] {
+        background-color: white !important;
+        color: #DC143C !important;
+        border: none !important;
+        padding: 0.5rem 1.5rem !important;
+        border-radius: 4px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        white-space: nowrap;
+    }
+    
+    button[key="admin_btn"]:hover,
+    button[key="new_chat_btn"]:hover {
+        background-color: #f0f0f0 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Initialize session state
 if 'messages' not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hello! What are you looking for today?"}
     ]
+    # Add example conversation from design (only on first load)
+    if 'example_added' not in st.session_state:
+        example_user_msg = """I have an appt with a commercial plumbing and underground utility company. they do all the underground piping for subdivisions, distribution centers (amazon), and hospitals. my appt is not until the last week in october but i want to be prepared. they also do all of their equipment maintenance on site. which i know we to show when it comes to that. i just need help with the commercial plumbing and underground utility work. can someone help me out on what products to talk about"""
+        example_ai_response = """If they are installing underground plumbing and utilities, then they are sure to have heavy equipment (i.e. All-In-One Fleet Treat, Titan Tacx, Titan Seize Not, Nutcracker, Brute, Boa Wrap, Python Tape, etc.) and they may need dust suppression and erosion control (MinCryl X-50) and they will need work gloves (Comprehensive Glove Program) and PPE (Safetyman). They are sure to have spills (Fuel & Oil Be Gone is great for rainbows on puddles, Insta-Zorb is great for removing muddy water from holes and Siege is great for hydraulic oil and fuel spill). After they install pipes, they typically jet them to remove dirt and debris (Muddog or Devour Ultra). They are working in dirty environments, so they'll need waterless hand cleaners (Double Duty Towels, Nutcase). For pipe fittings, they can use Moly DSD Aerosol and Titan 2250. I'm sure they'd love to have some Aqua Lights and Vision Pro Lights. Everyone loves Index-Tend Pry Bars. Hope that helps!"""
+        st.session_state.messages.append({"role": "user", "content": example_user_msg})
+        st.session_state.messages.append({"role": "assistant", "content": example_ai_response})
+        st.session_state.example_added = True
 
-# Header
+# Render header
 st.markdown("""
-    <div class="header-wrapper">
-        <div class="header-left">
-            <span class="logo-icon">☁️</span>
-            <span class="logo-text">MOMAR haystack</span>
-        </div>
-        <div class="header-center">AI Product Assistant</div>
-        <div class="header-right">
-            <!-- Buttons will be positioned here -->
-        </div>
+<div class="header-container">
+    <div class="header-left">
+        <div class="logo-square">H</div>
+        <span class="haystack-text">haystack</span>
+        <span class="ai-product-text">AI Product Assistant</span>
     </div>
+    <div class="header-right">
 """, unsafe_allow_html=True)
 
-# Create buttons
-admin_clicked = st.button("Admin Dashboard", key="admin")
-new_chat_clicked = st.button("New Chat", key="new_chat")
+# Header buttons
+col_admin, col_new = st.columns(2)
+with col_admin:
+    admin_clicked = st.button("Admin Dashboard", key="admin_btn")
+with col_new:
+    new_chat_clicked = st.button("New Chat", key="new_chat_btn")
 
-# Apply custom styling and JavaScript to move buttons into header
-st.markdown("""
-    <style>
-        /* Hide original button containers */
-        div[data-testid="column"]:has(button[key="admin"]),
-        div[data-testid="column"]:has(button[key="new_chat"]) {
-            display: none !important;
-        }
-        
-        /* Style buttons in header */
-        .header-right button {
-            background-color: #FFB6C1 !important;
-            color: #DC143C !important;
-            border: none !important;
-            border-radius: 8px !important;
-            padding: 8px 16px !important;
-            font-size: 14px !important;
-            font-weight: 500 !important;
-            cursor: pointer !important;
-            margin-left: 10px !important;
-        }
-        
-        .header-right button:first-child {
-            background-color: #FFB6C1 !important;
-            margin-left: 0 !important;
-        }
-        
-        .header-right button:first-child:hover {
-            background-color: #FFA0B4 !important;
-        }
-        
-        .header-right button:last-child {
-            background-color: white !important;
-        }
-        
-        .header-right button:last-child:hover {
-            background-color: #F5F5F5 !important;
-        }
-    </style>
-    <script>
-        function moveButtonsToHeader() {
-            const headerRight = document.querySelector('.header-right');
-            const adminButton = document.querySelector('button[key="admin"]');
-            const newChatButton = document.querySelector('button[key="new_chat"]');
-            
-            if (headerRight && adminButton && newChatButton) {
-                // Check if buttons are already moved
-                if (headerRight.contains(adminButton) || headerRight.contains(newChatButton)) {
-                    return;
-                }
-                // Move buttons to header-right
-                headerRight.appendChild(adminButton);
-                headerRight.appendChild(newChatButton);
-            }
-        }
-        
-        // Run immediately and after delays
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(moveButtonsToHeader, 100);
-            });
-        } else {
-            moveButtonsToHeader();
-            console.log('hi');
-            setTimeout(moveButtonsToHeader, 100);
-            setTimeout(moveButtonsToHeader, 500);
-        }
-        
-        // Also run after Streamlit reruns
-        window.addEventListener('load', function() {
-            setTimeout(moveButtonsToHeader, 100);
-            setTimeout(moveButtonsToHeader, 500);
-        });
-        
-        // Use MutationObserver to detect DOM changes
-        const observer = new MutationObserver(function() {
-            moveButtonsToHeader();
-        });
-        
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    </script>
-""", unsafe_allow_html=True)
+st.markdown("</div></div>", unsafe_allow_html=True)
 
-# Handle header button clicks
+# Handle button clicks
 if admin_clicked:
-    st.info("Admin Dashboard - Coming soon!")
+    st.info("Admin Dashboard - Add your navigation logic here")
 
 if new_chat_clicked:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hello! What are you looking for today?"}
     ]
+    st.session_state.example_added = False
     st.rerun()
 
 # Main content area
 st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
-# Display chat messages
-for i, msg in enumerate(st.session_state.messages):
+# Chat messages
+st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+
+for msg in st.session_state.messages:
+    escaped_content = html.escape(msg["content"])
     if msg["role"] == "assistant":
         st.markdown(f"""
-            <div class="chat-container">
-                <div class="ai-icon">✨</div>
-                <div class="message-bubble">{msg["content"]}</div>
-            </div>
+        <div class="message-ai">
+            <div class="icon-container">⚡</div>
+            <div class="message-bubble bubble-ai">{escaped_content}</div>
+        </div>
         """, unsafe_allow_html=True)
-    elif msg["role"] == "user":
+    else:
         st.markdown(f"""
-            <div class="chat-container" style="justify-content: flex-end;">
-                <div class="message-bubble" style="background-color: #DC143C; color: white;">{msg["content"]}</div>
-            </div>
+        <div class="message-user">
+            <div class="icon-container">👤</div>
+            <div class="message-bubble bubble-user">{escaped_content}</div>
+        </div>
         """, unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
-
-# Input area with form
-st.markdown('<div class="input-wrapper">', unsafe_allow_html=True)
-
-with st.form("chat_form", clear_on_submit=True):
-    input_col1, input_col2, input_col3 = st.columns([12, 1, 1])
-    with input_col1:
-        user_input = st.text_input("", placeholder="Ask anything...", key="user_input", label_visibility="collapsed")
-    with input_col2:
-        mic_clicked = st.form_submit_button("🎤", use_container_width=True)
-    with input_col3:
-        send_clicked = st.form_submit_button("➤", use_container_width=True, type="primary")
-
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Style input buttons
+# Input area with custom styling
 st.markdown("""
-    <style>
-        /* Style microphone button (first submit button) */
-        .stForm div[data-testid="column"]:nth-of-type(2) button {
-            background-color: white !important;
-            color: #333 !important;
-            border: 2px solid #E0E0E0 !important;
-        }
-        .stForm div[data-testid="column"]:nth-of-type(2) button:hover {
-            background-color: #F5F5F5 !important;
-        }
-        /* Style send button (second submit button) */
-        .stForm div[data-testid="column"]:nth-of-type(3) button {
-            background-color: #DC143C !important;
-            color: white !important;
-            border: none !important;
-        }
-        .stForm div[data-testid="column"]:nth-of-type(3) button:hover {
-            background-color: #B8122F !important;
-        }
-    </style>
+<div class="input-container">
+    <div class="input-wrapper">
 """, unsafe_allow_html=True)
 
-# Handle form submission
-if send_clicked and user_input:
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    # Here you would add AI response logic
-    st.session_state.messages.append({"role": "assistant", "content": f"You said: {user_input}"})
-    st.rerun()
+col_input, col_mic, col_send = st.columns([15, 1, 1])
 
-if mic_clicked:
-    st.info("Voice input feature coming soon!")
+with col_input:
+    user_input = st.text_input("", key="input", placeholder="Ask anything...", label_visibility="collapsed")
+
+with col_mic:
+    st.markdown('<div style="display: flex; align-items: center; justify-content: center; height: 100%;"><span class="input-icon">🎤</span></div>', unsafe_allow_html=True)
+
+with col_send:
+    st.markdown('<div style="display: flex; align-items: center; justify-content: center; height: 100%;"><span class="input-icon send">✈️</span></div>', unsafe_allow_html=True)
+
+st.markdown("""
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Handle user input
+if user_input:
+    # Add user message
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    
+    # Add assistant response (placeholder - you can integrate with your AI here)
+    st.session_state.messages.append({
+        "role": "assistant", 
+        "content": "Thank you for your message! I'm here to help you with product recommendations."
+    })
+    
+    st.rerun()
