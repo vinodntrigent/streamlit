@@ -273,13 +273,15 @@ st.markdown("""
         <span class="haystack-text">haystack</span>
         <span class="ai-product-text">AI Product Assistant</span>
     </div>
-    <div class="header-right">
+    <div class="header-right">{new_chat_clicked}
 """, unsafe_allow_html=True)
+
+
+
+st.markdown("</div></div>", unsafe_allow_html=True)
 
 # New chat button in header
 new_chat_clicked = st.button("New Chat", key="new_chat_btn")
-
-st.markdown("</div></div>", unsafe_allow_html=True)
 
 # Handle button click
 if new_chat_clicked:
