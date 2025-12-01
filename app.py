@@ -235,7 +235,6 @@ st.markdown("""
         flex: 0 0 auto !important;
     }
     
-    button[key="admin_btn"],
     button[key="new_chat_btn"] {
         background-color: white !important;
         color: #DC143C !important;
@@ -247,7 +246,6 @@ st.markdown("""
         white-space: nowrap;
     }
     
-    button[key="admin_btn"]:hover,
     button[key="new_chat_btn"]:hover {
         background-color: #f0f0f0 !important;
     }
@@ -278,19 +276,12 @@ st.markdown("""
     <div class="header-right">
 """, unsafe_allow_html=True)
 
-# Header buttons
-col_admin, col_new = st.columns(2)
-with col_admin:
-    admin_clicked = st.button("Admin Dashboard", key="admin_btn")
-with col_new:
-    new_chat_clicked = st.button("New Chat", key="new_chat_btn")
+# New chat button in header
+new_chat_clicked = st.button("New Chat", key="new_chat_btn")
 
-# st.markdown("</div></div>", unsafe_allow_html=True)
+st.markdown("</div></div>", unsafe_allow_html=True)
 
-# Handle button clicks
-if admin_clicked:
-    st.info("Admin Dashboard - Add your navigation logic here")
-
+# Handle button click
 if new_chat_clicked:
     st.session_state.messages = [
         {"role": "assistant", "content": "Hello! What are you looking for today?"}
@@ -330,7 +321,7 @@ st.markdown("""
     <div class="input-wrapper">
 """, unsafe_allow_html=True)
 
-col_input, col_mic, col_send = st.columns([15, 1, 1])
+col_input, col_mic, col_send = st.columns([15, 1, 1], gap="small")
 
 with col_input:
     user_input = st.text_input("", key="input", placeholder="Ask anything...", label_visibility="collapsed")

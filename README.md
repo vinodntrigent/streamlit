@@ -40,3 +40,4 @@ The app will open in your default web browser at `http://localhost:8501`
 
 You can customize the AI responses by modifying the response logic in the `if user_input:` section of `app.py`. Connect it to your AI model or API as needed.
 
+
