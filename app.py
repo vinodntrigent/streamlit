@@ -251,6 +251,9 @@ st.markdown("""
     button[key="new_chat_btn"]:hover {
         background-color: #f0f0f0 !important;
     }
+    .main-content {
+        display:none;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -285,7 +288,7 @@ with col_admin:
 with col_new:
     new_chat_clicked = st.button("New Chat", key="new_chat_btn")
 
-st.markdown("</div></div>", unsafe_allow_html=True)
+# st.markdown("</div></div>", unsafe_allow_html=True)
 
 # Handle button clicks
 if admin_clicked:
@@ -299,7 +302,7 @@ if new_chat_clicked:
     st.rerun()
 
 # Main content area
-st.markdown('<div class="main-content">', unsafe_allow_html=True)
+# st.markdown('<div class="main-content">', unsafe_allow_html=True)
 
 # Chat messages
 st.markdown('<div class="chat-container">', unsafe_allow_html=True)
