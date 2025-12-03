@@ -1,5 +1,35 @@
 import streamlit as st
 
+# Custom CSS for header styling
+st.markdown("""
+    <style>
+    .stApp > header {
+        visibility: hidden;
+    }
+    .stApp {
+        margin-top: 0rem;
+    }
+    .header-container {
+        background-color: #ab162b;
+        padding: 1rem 2rem;
+        margin: -1rem -1rem 2rem -1rem;
+    }
+    .header-title {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 500;
+        font-family: sans-serif;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Create custom header
+st.markdown("""
+    <div class="header-container">
+        <div class="header-title">AI Product Assistant</div>
+    </div>
+""", unsafe_allow_html=True)
+
 # Initialize chat history in session state if it doesn't exist
 if "messages" not in st.session_state:
     st.session_state.messages = []
