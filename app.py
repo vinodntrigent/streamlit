@@ -32,6 +32,12 @@ st.markdown("""
         max-width: initial;
         margin: 0 auto;
     }
+    .header-container {
+        position: fixed;
+        width: 100%;
+        padding-top: 2rem;
+        z-index: 500;
+    }
     </style>
 """, unsafe_allow_html=True)
 
