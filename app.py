@@ -50,22 +50,8 @@ st.markdown("""
     section > div > div > div:nth-child(3) {
         margin-top: 60px;
     }
-    div[data-testid="column"]:nth-child(2) {
-        background-color: #f8f9fa;
-        padding: 1.5rem;
-        border-left: 1px solid #e0e0e0;
-        min-height: calc(100vh - 60px);
-    }
     /* Anchor chat input to bottom */
-    div[data-testid="column"]:first-child {
-        display: flex;
-        flex-direction: column;
-        height: calc(100vh - 60px);
-        position: relative;
-    }
     .chat-messages {
-        flex: 1;
-        overflow-y: auto;
         padding-bottom: 100px;
     }
     /* Target the chat input container - multiple selectors to catch it */
@@ -75,12 +61,12 @@ st.markdown("""
         position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
-        right: 25% !important;
+        right: 0 !important;
         background-color: white !important;
         padding: 1rem !important;
         border-top: 1px solid #e0e0e0 !important;
         z-index: 100 !important;
-        width: 75% !important;
+        width: 100% !important;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
     }
     /* Ensure the input itself is styled */
@@ -102,45 +88,27 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Create layout with main content and right sidebar
-main_col, sidebar_col = st.columns([0.75, 0.25])
+# Messages container
+st.markdown('<div class="chat-messages">', unsafe_allow_html=True)
 
-with main_col:
-    # Messages container
-    st.markdown('<div class="chat-messages">', unsafe_allow_html=True)
-    
-    # Display previous messages
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-    
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Chat input for the user (will be anchored to bottom via CSS)
-    if prompt := st.chat_input("Hello! What are you looking for today?"):
-        # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        # with st.chat_message("user", avatar=user_svg_icon):
-        with st.chat_message("user"):
-            st.write(prompt)
+# Display previous messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
 
-        # Generate a simple assistant response (replace with your LLM integration)
-        assistant_response = f"{prompt}"
-        st.session_state.messages.append({"role": "assistant", "content": assistant_response})
-        # with st.chat_message("assistant", avatar=ai_svg_icon):
-        with st.chat_message("assistant"):
-            st.write(assistant_response)
+st.markdown('</div>', unsafe_allow_html=True)
 
-with sidebar_col:
-    st.markdown("### Sidebar")
-    st.markdown("---")
-    
-    # Add sidebar content here
-    st.markdown("**Options**")
-    if st.button("Clear Chat"):
-        st.session_state.messages = []
-        st.rerun()
-    
-    st.markdown("---")
-    st.markdown("**Settings**")
-    # Add more sidebar widgets as needed
+# Chat input for the user (will be anchored to bottom via CSS)
+if prompt := st.chat_input("Hello! What are you looking for today?"):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    # with st.chat_message("user", avatar=user_svg_icon):
+    with st.chat_message("user"):
+        st.write(prompt)
+
+    # Generate a simple assistant response (replace with your LLM integration)
+    assistant_response = f"{prompt}"
+    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+    # with st.chat_message("assistant", avatar=ai_svg_icon):
+    with st.chat_message("assistant"):
+        st.write(assistant_response)
