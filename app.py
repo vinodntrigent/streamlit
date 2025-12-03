@@ -27,6 +27,11 @@ st.markdown("""
     .stAppHeader {
         display: none;
     }
+    [data-testid="stLayoutWrapper"] {
+        width: 90%;
+        max-width: initial;
+        margin: 0 auto;
+    }
     </style>
 """, unsafe_allow_html=True)
 
