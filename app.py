@@ -74,7 +74,7 @@ if prompt := st.chat_input("Hello! What are you looking for today?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
     # with st.chat_message("user", avatar=user_svg_icon):
-    with st.chat_message("user", avatar=user_svg_icon):
+    with st.chat_message("user"):
         st.write(prompt)
 
     # Generate a simple assistant response (replace with your LLM integration)
