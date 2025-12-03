@@ -30,13 +30,16 @@ st.markdown("""
     [data-testid="stLayoutWrapper"] {
         width: 90%;
         max-width: initial;
-        margin: 60px auto 0;
+        margin: 0 auto;
     }
     .header-container {
         position: fixed;
         width: 100%;
         padding-top: 2rem;
         z-index: 500;
+    }
+    section > div > div > div:nth-child(3) {
+        margin-top: 60px;
     }
     </style>
 """, unsafe_allow_html=True)
