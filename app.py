@@ -30,7 +30,7 @@ st.markdown("""
     [data-testid="stLayoutWrapper"] {
         width: 90%;
         max-width: initial;
-        margin: 0 auto;
+        margin: 60px auto 0;
     }
     .header-container {
         position: fixed;
