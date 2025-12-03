@@ -50,6 +50,12 @@ st.markdown("""
     section > div > div > div:nth-child(3) {
         margin-top: 60px;
     }
+    div[data-testid="column"]:nth-child(2) {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-left: 1px solid #e0e0e0;
+        min-height: calc(100vh - 60px);
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -64,22 +70,40 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Display previous messages
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
+# Create layout with main content and right sidebar
+main_col, sidebar_col = st.columns([0.75, 0.25])
 
-# Chat input for the user
-if prompt := st.chat_input("Hello! What are you looking for today?"):
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    # with st.chat_message("user", avatar=user_svg_icon):
-    with st.chat_message("user"):
-        st.write(prompt)
+with main_col:
+    # Display previous messages
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.write(message["content"])
 
-    # Generate a simple assistant response (replace with your LLM integration)
-    assistant_response = f"{prompt}"
-    st.session_state.messages.append({"role": "assistant", "content": assistant_response})
-    # with st.chat_message("assistant", avatar=ai_svg_icon):
-    with st.chat_message("assistant"):
-        st.write(assistant_response)
+    # Chat input for the user
+    if prompt := st.chat_input("Hello! What are you looking for today?"):
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        # with st.chat_message("user", avatar=user_svg_icon):
+        with st.chat_message("user"):
+            st.write(prompt)
+
+        # Generate a simple assistant response (replace with your LLM integration)
+        assistant_response = f"{prompt}"
+        st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+        # with st.chat_message("assistant", avatar=ai_svg_icon):
+        with st.chat_message("assistant"):
+            st.write(assistant_response)
+
+with sidebar_col:
+    st.markdown("### Sidebar")
+    st.markdown("---")
+    
+    # Add sidebar content here
+    st.markdown("**Options**")
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
+        st.rerun()
+    
+    st.markdown("---")
+    st.markdown("**Settings**")
+    # Add more sidebar widgets as needed
