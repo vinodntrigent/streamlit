@@ -54,27 +54,6 @@ st.markdown("""
     .chat-messages {
         padding-bottom: 100px;
     }
-    /* Chat input container wrapper */
-    .chat-input-wrapper {
-        position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        background-color: white !important;
-        padding: 1rem !important;
-        padding-left: 4.5rem !important;
-        border-top: 1px solid #e0e0e0 !important;
-        z-index: 100 !important;
-        width: 100% !important;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
-    }
-    /* Mic button container */
-    .mic-button-container {
-        position: fixed !important;
-        bottom: 1rem !important;
-        left: 1rem !important;
-        z-index: 101 !important;
-    }
     /* Target the chat input container - multiple selectors to catch it */
     div[data-testid="stChatInputContainer"],
     form[data-testid="stChatInputForm"],
@@ -85,16 +64,46 @@ st.markdown("""
         right: 0 !important;
         background-color: white !important;
         padding: 1rem !important;
-        padding-left: 4.5rem !important;
         border-top: 1px solid #e0e0e0 !important;
         z-index: 100 !important;
         width: 100% !important;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
     }
-    /* Ensure the input itself is styled */
+    /* Style the input field to make room for buttons */
     div[data-testid="stChatInputContainer"] input,
     form[data-testid="stChatInputForm"] input {
-        width: 100% !important;
+        padding-right: 5rem !important;
+    }
+    /* Mic button container - positioned inside chat input, before send button */
+    .mic-button-container {
+        position: fixed !important;
+        bottom: 1.25rem !important;
+        right: 4.5rem !important;
+        z-index: 101 !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    /* Style the mic button */
+    .mic-button-container button {
+        background-color: transparent !important;
+        border: none !important;
+        padding: 0.5rem !important;
+        cursor: pointer !important;
+        font-size: 1.2rem !important;
+        color: #666 !important;
+        transition: all 0.2s ease !important;
+        min-width: auto !important;
+        width: auto !important;
+        height: auto !important;
+    }
+    .mic-button-container button:hover {
+        color: #ab162b !important;
+        transform: scale(1.1) !important;
+    }
+    /* Recording state */
+    .mic-button-container button.recording {
+        color: #ff4444 !important;
+        animation: pulse 1.5s infinite !important;
     }
     /* Mic button styling */
     .mic-button {
@@ -150,7 +159,10 @@ for message in st.session_state.messages:
 
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Speech-to-text button positioned before chat input
+# Chat input for the user (will be anchored to bottom via CSS)
+prompt = st.chat_input("Ask a question...")
+
+# Speech-to-text button positioned inside chat input, before send button
 st.markdown('<div class="mic-button-container">', unsafe_allow_html=True)
 mic_button_clicked = st.button("🎤", key="mic_button", help="Start voice input")
 if mic_button_clicked:
@@ -160,9 +172,6 @@ if mic_button_clicked:
     else:
         st.info("Recording stopped.")
 st.markdown('</div>', unsafe_allow_html=True)
-
-# Chat input for the user (will be anchored to bottom via CSS)
-prompt = st.chat_input("Ask a question...")
 
 # Handle chat input
 if prompt:
