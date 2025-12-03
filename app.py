@@ -69,65 +69,10 @@ st.markdown("""
         width: 100% !important;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
     }
-    /* Style the input field to make room for buttons */
+    /* Ensure the input itself is styled */
     div[data-testid="stChatInputContainer"] input,
     form[data-testid="stChatInputForm"] input {
-        padding-right: 5rem !important;
-    }
-    /* Mic button container - positioned inside chat input, before send button */
-    .mic-button-container {
-        position: fixed !important;
-        bottom: 1.25rem !important;
-        right: 4.5rem !important;
-        z-index: 101 !important;
-        display: flex !important;
-        align-items: center !important;
-    }
-    /* Style the mic button */
-    .mic-button-container button {
-        background-color: transparent !important;
-        border: none !important;
-        padding: 0.5rem !important;
-        cursor: pointer !important;
-        font-size: 1.2rem !important;
-        color: #666 !important;
-        transition: all 0.2s ease !important;
-        min-width: auto !important;
-        width: auto !important;
-        height: auto !important;
-    }
-    .mic-button-container button:hover {
-        color: #ab162b !important;
-        transform: scale(1.1) !important;
-    }
-    /* Recording state */
-    .mic-button-container button.recording {
-        color: #ff4444 !important;
-        animation: pulse 1.5s infinite !important;
-    }
-    /* Mic button styling */
-    .mic-button {
-        background-color: #f0f0f0;
-        border: 1px solid #d0d0d0;
-        border-radius: 50%;
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    .mic-button:hover {
-        background-color: #e0e0e0;
-    }
-    .mic-button.recording {
-        background-color: #ff4444;
-        animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
+        width: 100% !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -143,12 +88,6 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Initialize speech-to-text state
-if "is_recording" not in st.session_state:
-    st.session_state.is_recording = False
-if "transcribed_text" not in st.session_state:
-    st.session_state.transcribed_text = ""
-
 # Messages container
 st.markdown('<div class="chat-messages">', unsafe_allow_html=True)
 
@@ -160,21 +99,7 @@ for message in st.session_state.messages:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Chat input for the user (will be anchored to bottom via CSS)
-prompt = st.chat_input("Ask a question...")
-
-# Speech-to-text button positioned inside chat input, before send button
-st.markdown('<div class="mic-button-container">', unsafe_allow_html=True)
-mic_button_clicked = st.button("🎤", key="mic_button", help="Start voice input")
-if mic_button_clicked:
-    st.session_state.is_recording = not st.session_state.is_recording
-    if st.session_state.is_recording:
-        st.info("🎤 Recording... Click again to stop.")
-    else:
-        st.info("Recording stopped.")
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Handle chat input
-if prompt:
+if prompt := st.chat_input("Ask a question..."):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
     # with st.chat_message("user", avatar=user_svg_icon):
