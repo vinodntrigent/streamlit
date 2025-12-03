@@ -48,7 +48,7 @@ st.markdown("""
         z-index: 500;
     }
     section > div > div > div:nth-child(3) {
-        margin-top: 60px;
+        margin-top: -65px;
     }
     /* Anchor chat input to bottom */
     .chat-messages {
