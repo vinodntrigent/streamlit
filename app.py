@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Custom CSS for header styling
-st.markdown(f"""
+st.markdown("""
     <style>
     .stApp > header {
         visibility: hidden;
