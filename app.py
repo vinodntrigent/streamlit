@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Custom CSS for header styling
-st.markdown("""
+st.markdown(f"""
     <style>
     .stApp > header {
         visibility: hidden;
@@ -22,6 +22,10 @@ st.markdown("""
     }
     .stMainBlockContainer {
         max-width: initial;
+        padding: 0;
+    }
+    .stAppHeader {
+        display: none;
     }
     </style>
 """, unsafe_allow_html=True)
