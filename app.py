@@ -77,7 +77,7 @@ if prompt := st.chat_input("Hello! What are you looking for today?"):
         st.write(prompt)
 
     # Generate a simple assistant response (replace with your LLM integration)
-    assistant_response = f"You said: {prompt}"
+    assistant_response = f"{prompt}"
     st.session_state.messages.append({"role": "assistant", "content": assistant_response})
     with st.chat_message("assistant", avatar=ai_svg_icon):
         st.write(assistant_response)
