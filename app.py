@@ -47,7 +47,7 @@ st.markdown("""
 # Create custom header
 st.markdown("""
     <div class="header-container">
-        <div class="header-title">AI Product Assistant</div>
+        <div class="header-title">Momar Haystack AI Product Assistant</div>
     </div>
 """, unsafe_allow_html=True)
 
