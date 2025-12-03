@@ -20,6 +20,9 @@ st.markdown("""
         font-weight: 500;
         font-family: sans-serif;
     }
+    .stMainBlockContainer {
+        max-width: initial;
+    }
     </style>
 """, unsafe_allow_html=True)
 
