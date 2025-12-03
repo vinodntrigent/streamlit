@@ -99,7 +99,7 @@ for message in st.session_state.messages:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Chat input for the user (will be anchored to bottom via CSS)
-if prompt := st.chat_input("Hello! What are you looking for today?"):
+if prompt := st.chat_input("Ask a question..."):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
     # with st.chat_message("user", avatar=user_svg_icon):
